@@ -42,7 +42,7 @@ class AASISTOnnxDetector(AudioDetector):
         try:
             import onnxruntime as ort
         except ImportError as exc:
-            raise ModelUnavailableError("ONNX Runtime is missing; install requirements-inference.txt") from exc
+            raise ModelUnavailableError("ONNX Runtime is missing; install requirements.txt") from exc
         available = set(ort.get_available_providers())
         missing = [provider for provider in config.execution_providers if provider not in available]
         if missing:
