@@ -1,0 +1,7 @@
+# Runtime uses Python standard library only; WAV decoding has no external dependencies.
+# Test dependency, pinned for reproducible compatibility suite:
+pytest==8.3.5
+colorama==0.4.6
+iniconfig==2.3.1
+packaging==26.3
+pluggy==1.7.0
