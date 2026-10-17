@@ -151,7 +151,32 @@ def test_same_integration_contract_with_registered_alternate_adapter(tmp_path):
     assert set(service_result.to_dict()) == set(public_result.to_dict())
 
 
+def test_default_public_api_reuses_one_loaded_adapter(tmp_path, monkeypatch):
+    from audio_authenticity import detector as service_module
+
+    load_count = 0
+
+    class CountingDouble(TestDoubleDetector):
+        __test__ = False
+        def load_model(self, config):
+            nonlocal load_count
+            load_count += 1
+            super().load_model(config)
+
+    service_module.close_default_service()
+    register_adapter("lifecycle-double", CountingDouble)
+    monkeypatch.setenv("VERIFVOICE_ADAPTER", "lifecycle-double")
+    path = tmp_path / "good.wav"; write_wav(path)
+    try:
+        assert service_module.analyze_audio(str(path)).status == "success"
+        assert service_module.analyze_audio(str(path)).status == "success"
+        assert load_count == 1
+    finally:
+        service_module.close_default_service()
+
+
 def test_interface_is_abstract_and_test_double_satisfies_contract():
     assert isinstance(TestDoubleDetector(), AudioDetector)
     assert all(hasattr(TestDoubleDetector, name) for name in ("load_model", "predict", "get_model_info", "health_check", "close"))
+
 

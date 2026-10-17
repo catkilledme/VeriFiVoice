@@ -3,8 +3,11 @@
 .uv-python/
 __pycache__/
 .pytest_cache/
+.pytest-tmp/
 *.py[cod]
 *.wav
 *.onnx
+models/.aasist-*
 *.pt
 *.pth
+

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import atexit
+from threading import Lock
 import time
 
 from .adapters.base import AudioDetector
@@ -58,10 +60,38 @@ class AudioAnalysisService:
         result_warnings = prediction.warnings + (("possible_clipping",) if metadata.peak >= 0.999 else ())
         return self._result(status, score, label, info.name, info.version, metadata.sample_rate, metadata.duration_seconds, (), result_warnings, quality, elapsed, "uncalibrated_spoof_score" if score is not None else None, prediction.calibrated_probability)
 
+    def close(self) -> None:
+        """Release adapter resources when an application service shuts down."""
+        self.detector.close()
+
     def _result(self, status, score, label, name, version, rate, duration, reasons, warnings, quality=None, elapsed=None, kind=None, calibrated_probability=None):
         return AudioAnalysisResult("1.0", status, score, kind, calibrated_probability, label, None, quality, name, version, rate, duration, elapsed, tuple(reasons), tuple(warnings))
 
 
+_default_service: AudioAnalysisService | None = None
+_default_service_lock = Lock()
+
+
 def analyze_audio(audio_path: str, detector: AudioDetector | None = None, config: DetectorConfig | None = None) -> AudioAnalysisResult:
     """Stable function for FastAPI and other clients; adapter injection is optional."""
+    if detector is None and config is None:
+        global _default_service
+        if _default_service is None:
+            with _default_service_lock:
+                if _default_service is None:
+                    _default_service = AudioAnalysisService()
+        return _default_service.analyze(audio_path)
     return AudioAnalysisService(config, detector).analyze(audio_path)
+
+
+def close_default_service() -> None:
+    """Release the process-wide default detector, suitable for API shutdown hooks."""
+    global _default_service
+    with _default_service_lock:
+        if _default_service is not None:
+            _default_service.close()
+            _default_service = None
+
+
+atexit.register(close_default_service)
+

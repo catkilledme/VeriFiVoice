@@ -14,6 +14,8 @@ class DetectorConfig:
     minimum_duration_seconds: float = 0.25
     minimum_rms: float = 1e-4
     classification_threshold: float = 0.5
+    model_path: str = "models/aasist.onnx"
+    execution_providers: tuple[str, ...] = ("CPUExecutionProvider",)
 
     @classmethod
     def from_env(cls) -> "DetectorConfig":
@@ -25,6 +27,8 @@ class DetectorConfig:
             minimum_duration_seconds=float(os.getenv("VERIFVOICE_MIN_DURATION", str(cls.minimum_duration_seconds))),
             minimum_rms=float(os.getenv("VERIFVOICE_MIN_RMS", str(cls.minimum_rms))),
             classification_threshold=float(os.getenv("VERIFVOICE_THRESHOLD", str(cls.classification_threshold))),
+            model_path=os.getenv("VERIFVOICE_MODEL_PATH", cls.model_path),
+            execution_providers=tuple(name.strip() for name in os.getenv("VERIFVOICE_ONNX_PROVIDERS", ",".join(cls.execution_providers)).split(",") if name.strip()),
         )
         config.validate()
         return config
@@ -39,3 +43,8 @@ class DetectorConfig:
             raise ValueError("Classification threshold must be strictly between 0 and 1")
         if self.minimum_rms < 0:
             raise ValueError("Minimum RMS must be non-negative")
+        if not self.model_path:
+            raise ValueError("Model path cannot be empty")
+        if not self.execution_providers:
+            raise ValueError("At least one ONNX execution provider must be configured")
+
