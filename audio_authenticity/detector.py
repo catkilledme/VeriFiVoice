@@ -94,4 +94,3 @@ def close_default_service() -> None:
 
 
 atexit.register(close_default_service)
-

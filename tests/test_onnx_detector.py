@@ -134,4 +134,3 @@ def test_unavailable_provider_is_reported_without_provider_guessing():
     detector = AASISTOnnxDetector()
     with pytest.raises(ModelUnavailableError, match="provider.*unavailable"):
         detector.load_model(_config(execution_providers=("NoSuchProvider",)))
-

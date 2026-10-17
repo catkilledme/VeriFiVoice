@@ -24,4 +24,3 @@ The current adapter accepts only the checksum-pinned AASIST artifact. For a diff
 - Loading error: check configured model path, artifact integrity/license, optional dependencies, and device setting; preserve the actionable adapter error.
 - Import/native failure on s390x: verify architecture-specific wheels/build instructions rather than assuming x86 compatibility.
 - Uncertain with no score: inspect status/reasons; invalid/quiet audio and absent model do not mean genuine speech.
-

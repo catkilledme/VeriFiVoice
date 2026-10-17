@@ -111,4 +111,3 @@ def _spoof_score_from_logits(logits: list[float]) -> float:
     maximum = max(float(value) for value in logits)
     exponents = [math.exp(float(value) - maximum) for value in logits]
     return exponents[0] / sum(exponents)
-

@@ -179,4 +179,3 @@ def test_interface_is_abstract_and_test_double_satisfies_contract():
     assert isinstance(TestDoubleDetector(), AudioDetector)
     assert all(hasattr(TestDoubleDetector, name) for name in ("load_model", "predict", "get_model_info", "health_check", "close"))
 
-

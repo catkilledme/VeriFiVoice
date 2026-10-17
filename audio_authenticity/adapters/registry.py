@@ -26,4 +26,3 @@ def create_adapter(config: DetectorConfig) -> AudioDetector:
         return _REGISTRY[config.adapter_name]()
     except KeyError as exc:
         raise ValueError(f"Unknown adapter {config.adapter_name!r}; registered: {', '.join(sorted(_REGISTRY))}") from exc
-

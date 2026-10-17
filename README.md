@@ -4,7 +4,7 @@ This module runs a pretrained AASIST anti-spoofing model through ONNX Runtime. I
 
 ## Windows setup
 
-Use CPython 3.12â€“3.14 on Windows x64 with the pinned inference dependencies. The tested environment was CPython 3.12.15, ONNX Runtime 1.31.0, NumPy 2.5.4, and SciPy 1.18.1.
+Use CPython 3.12–3.14 on Windows x64 with the pinned inference dependencies. The tested environment was CPython 3.12.15, ONNX Runtime 1.31.0, NumPy 2.5.4, and SciPy 1.18.1.
 
 ```powershell
 py -3.12 -m venv .venv
@@ -76,4 +76,3 @@ IBM Z was not available for execution. The official ONNX Runtime support page li
 - The softmax score is uncalibrated model evidence, not an estimated real-world fraud probability.
 - No ONNX conversion was done because a published pretrained ONNX artifact was available. PyTorch export parity was not tested.
 - IBM LinuxONE runtime execution is not verified.
-

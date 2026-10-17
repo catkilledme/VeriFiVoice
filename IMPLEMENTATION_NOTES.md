@@ -43,4 +43,3 @@ Not tested on s390x. The ONNX Runtime build documentation lists Linux S390X as a
 - The artifact is small and redistributable under the model card's MIT label, but is downloaded rather than committed to Git; download integrity is enforced by SHA-256.
 - Model-card publisher-reported error rates worsen sharply on cross-domain sets (ASVspoof2019 LA 0.83% EER vs. InTheWild 43.01% and CD-ADD 51.05%). These are not measurements by this project and show why a generated-tone smoke result is not accuracy evidence.
 - Only PCM WAV is decoded, no replay-specific capability is claimed, and threshold/classification is not a fraud or payment decision.
-

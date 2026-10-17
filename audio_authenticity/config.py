@@ -47,4 +47,3 @@ class DetectorConfig:
             raise ValueError("Model path cannot be empty")
         if not self.execution_providers:
             raise ValueError("At least one ONNX execution provider must be configured")
-

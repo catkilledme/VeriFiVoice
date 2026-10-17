@@ -37,4 +37,3 @@ def prepare_aasist_input(audio, metadata: AudioMetadata):
     if not np.isfinite(batch).all():
         raise ValueError("AASIST preprocessing produced non-finite samples")
     return batch
-
